@@ -17,7 +17,7 @@ class Products extends StatelessWidget {
           ButtonBar(
             alignment: MainAxisAlignment.center,
             children: <Widget>[
-              FlatButton(
+              TextButton(
                 child: Text('Details'),
                 onPressed: () => Navigator.pushNamed<bool>(
                         context, '/product/' + index.toString())
