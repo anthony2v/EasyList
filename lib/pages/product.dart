@@ -34,7 +34,7 @@ class ProductPage extends StatelessWidget {
                       Theme.of(context).accentColor),
                 ),
                 child: Text('DELETE'),
-                onPressed: () => {Navigator.pop(context, true)},
+                onPressed: () => Navigator.pop(context, true),
               ),
             ),
           ],
