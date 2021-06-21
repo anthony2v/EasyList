@@ -35,6 +35,7 @@ class Products extends StatelessWidget {
   }
 
   Widget _buildProductList() {
+    print('[Products Widget] _buildProductList()');
     Widget productCards;
     if (products.length > 0) {
       productCards = ListView.builder(
