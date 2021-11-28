@@ -31,7 +31,9 @@ class ProductsAdminPage extends StatelessWidget {
           ),
         ),
         appBar: AppBar(
-          title: Text('Manage Products'),
+          title: Text(
+            'Manage Products',
+          ),
           bottom: TabBar(
             tabs: <Widget>[
               Tab(
