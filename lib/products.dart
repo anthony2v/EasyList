@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 class Products extends StatelessWidget {
-  final List<Map<String, String>> products;
-  final Function deleteProduct;
+  final List<Map<String, dynamic>> products;
+
   // Constructor with a shortcut to automatically assign a variable to a local variable.
-  Products(this.products, {this.deleteProduct}) {
+  Products(this.products) {
     print('[Products Widget Constructor]');
   }
 
@@ -18,17 +18,9 @@ class Products extends StatelessWidget {
             alignment: MainAxisAlignment.center,
             children: <Widget>[
               TextButton(
-                child: Text('Details'),
-                onPressed: () => Navigator.pushNamed<bool>(
-                        context, '/product/' + index.toString())
-                    .then(
-                  (bool value) {
-                    if (value) {
-                      deleteProduct(index);
-                    }
-                  },
-                ),
-              ),
+                  child: Text('Details'),
+                  onPressed: () => Navigator.pushNamed<bool>(
+                      context, '/product/' + index.toString())),
             ],
           )
         ],

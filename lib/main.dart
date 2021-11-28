@@ -20,8 +20,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  List<Map<String, String>> _products = [];
-  void _addProduct(Map<String, String> product) {
+  List<Map<String, dynamic>> _products = [];
+  void _addProduct(Map<String, dynamic> product) {
     setState(() {
       _products.add(product);
     });
@@ -42,14 +42,14 @@ class _MyAppState extends State<MyApp> {
       // debugShowMaterialGrid: true,
       theme: ThemeData(
         brightness: Brightness.light,
-        primarySwatch: Colors.teal,
-        accentColor: Colors.deepOrange,
+        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.orange)
+            .copyWith(secondary: Colors.deepOrange),
       ),
       //home: AuthPage(), // Redundant, copy of '/': (BuildContext context) => ProductsPage(), in routes.
       routes: {
-        '/': (BuildContext context) =>
-            ProductsPage(_products, _addProduct, _deleteProduct),
-        '/admin': (BuildContext context) => ProductsAdminPage(),
+        '/': (BuildContext context) => ProductsPage(_products),
+        '/admin': (BuildContext context) =>
+            ProductsAdminPage(_addProduct, _deleteProduct),
       },
       onGenerateRoute: (RouteSettings settings) {
         final List<String> pathElements = settings.name.split('/');
@@ -69,8 +69,7 @@ class _MyAppState extends State<MyApp> {
       },
       onUnknownRoute: (RouteSettings settings) {
         return MaterialPageRoute(
-            builder: (BuildContext context) =>
-                ProductsPage(_products, _addProduct, _deleteProduct));
+            builder: (BuildContext context) => ProductsPage(_products));
       },
     );
   }
