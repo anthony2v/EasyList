@@ -1,6 +1,7 @@
 /* Packt Learn Flutter and Dart to Build iOS and Android Apps */
 import 'package:flutter/material.dart';
 // import 'package:flutter/rendering.dart';
+import 'pages/auth.dart';
 import 'pages/products_admin.dart';
 import 'pages/products.dart';
 import 'pages/product.dart';
@@ -47,9 +48,10 @@ class _MyAppState extends State<MyApp> {
       ),
       //home: AuthPage(), // Redundant, copy of '/': (BuildContext context) => ProductsPage(), in routes.
       routes: {
-        '/': (BuildContext context) => ProductsPage(_products),
+        '/': (BuildContext context) => AuthPage(),
         '/admin': (BuildContext context) =>
             ProductsAdminPage(_addProduct, _deleteProduct),
+        '/products': (BuildContext context) => ProductsPage(_products),
       },
       onGenerateRoute: (RouteSettings settings) {
         final List<String> pathElements = settings.name.split('/');
