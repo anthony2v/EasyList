@@ -66,8 +66,7 @@ class _MyAppState extends State<MyApp> {
           print('[Main] build(): index: ');
           print(index);
           return MaterialPageRoute<bool>(
-            builder: (BuildContext context) => ProductPage(
-                _products[index]['title'], _products[index]['image']),
+            builder: (BuildContext context) => ProductPage(_products[index]),
           );
         }
         return null;

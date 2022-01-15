@@ -55,7 +55,8 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
                   'title': _titleValue,
                   'description': _descriptionValue,
                   'price': _priceValue,
-                  'image': 'assets/food.jpg'
+                  'image': 'assets/food.jpg',
+                  'address': 'Union Square, San Francisco'
                 };
                 widget.addProduct(product);
                 Navigator.pushReplacementNamed(context, '/products');

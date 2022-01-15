@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:first_app/widgets/ui_elements/title_default.dart';
+
+import '../widgets/products/address_tag.dart';
+import '../widgets/ui_elements/title_default.dart';
 
 class ProductPage extends StatelessWidget {
-  final String _title;
-  final String _imageUrl;
+  final Map<String, dynamic> _product;
 
-  ProductPage(this._title, this._imageUrl);
+  ProductPage(this._product);
 
   _showWarningDialog(BuildContext context) {
     showDialog(
@@ -44,16 +45,17 @@ class ProductPage extends StatelessWidget {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text(_title),
+          title: Text(_product['title']),
         ),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Image.asset(_imageUrl),
+            Image.asset(_product['image']),
             Container(
               padding: EdgeInsets.all(10.0),
-              child: TitleDefault(_title),
+              child: TitleDefault(_product['title']),
             ),
+            AddressTag(_product['address']),
             Container(
               padding: EdgeInsets.all(10.0),
               child: ElevatedButton(
