@@ -19,7 +19,7 @@ class ProductsAdminPage extends StatelessWidget {
             children: <Widget>[
               AppBar(
                 automaticallyImplyLeading: false,
-                title: Text('Choose'),
+                title: Text('Choose', style: TextStyle(color: Colors.white)),
               ),
               ListTile(
                 leading: Icon(Icons.shop),
@@ -32,9 +32,8 @@ class ProductsAdminPage extends StatelessWidget {
           ),
         ),
         appBar: AppBar(
-          title: Text(
-            'Manage Products',
-          ),
+          iconTheme: IconThemeData(color: Colors.white),
+          title: Text('Manage Products', style: TextStyle(color: Colors.white)),
           bottom: TabBar(
             tabs: <Widget>[
               Tab(
