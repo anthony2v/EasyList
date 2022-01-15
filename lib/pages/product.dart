@@ -58,7 +58,7 @@ class ProductPage extends StatelessWidget {
               child: ElevatedButton(
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all<Color>(
-                      Theme.of(context).accentColor),
+                      Theme.of(context).colorScheme.secondaryVariant),
                 ),
                 child: Text('DELETE'),
                 onPressed: () => _showWarningDialog(context),
