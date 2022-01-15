@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class Products extends StatelessWidget {
   final List<Map<String, dynamic>> products;
+  final bool _isFavorite = false;
 
   // Constructor with a shortcut to automatically assign a variable to a local variable.
   Products(this.products) {
@@ -50,10 +51,19 @@ class Products extends StatelessWidget {
           ButtonBar(
             alignment: MainAxisAlignment.center,
             children: <Widget>[
-              TextButton(
-                  child: Text('Details'),
+              IconButton(
+                  color: Theme.of(context).colorScheme.secondaryVariant,
+                  icon: Icon(Icons.info),
                   onPressed: () => Navigator.pushNamed<bool>(
                       context, '/product/' + index.toString())),
+              IconButton(
+                  color: Colors.red,
+                  onPressed: () {
+                    print('Product favorited');
+                    // TODO turn into stateful widget and flip _isFavorite
+                  },
+                  icon: Icon(
+                      _isFavorite ? Icons.favorite : Icons.favorite_border))
             ],
           )
         ],
