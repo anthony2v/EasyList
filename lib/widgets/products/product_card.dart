@@ -28,7 +28,7 @@ class ProductCard extends StatelessWidget {
               children: [
                 TitleDefault(_product['title']),
                 SizedBox(width: 8.0),
-                PriceTag(_product['price'].toString()),
+                PriceTag(_product['price'].toStringAsFixed(2)),
               ],
             ),
           ),

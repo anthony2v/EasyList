@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../widgets/products/address_tag.dart';
+import '../widgets/products/price_tag.dart';
 import '../widgets/ui_elements/title_default.dart';
 
 class ProductPage extends StatelessWidget {
@@ -35,6 +36,24 @@ class ProductPage extends StatelessWidget {
     );
   }
 
+  Widget _buildAddressPriceRow() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        AddressTag(_product['address']),
+        Container(
+          margin: EdgeInsets.symmetric(horizontal: 5.0),
+          child: Text(
+            '|',
+            style: TextStyle(color: Colors.black),
+          ),
+        ),
+        Text('\$${_product['price'].toStringAsFixed(2)}',
+            style: TextStyle(color: Colors.black))
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -55,7 +74,7 @@ class ProductPage extends StatelessWidget {
               padding: EdgeInsets.all(10.0),
               child: TitleDefault(_product['title']),
             ),
-            AddressTag(_product['address']),
+            _buildAddressPriceRow(),
             Container(
               padding: EdgeInsets.all(10.0),
               child: ElevatedButton(
