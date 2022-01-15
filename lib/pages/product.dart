@@ -40,16 +40,17 @@ class ProductPage extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        AddressTag(_product['address']),
+        Text(_product['address'].toString(),
+            style: TextStyle(color: Colors.grey)),
         Container(
           margin: EdgeInsets.symmetric(horizontal: 5.0),
           child: Text(
             '|',
-            style: TextStyle(color: Colors.black),
+            style: TextStyle(color: Colors.grey),
           ),
         ),
         Text('\$${_product['price'].toStringAsFixed(2)}',
-            style: TextStyle(color: Colors.black))
+            style: TextStyle(color: Colors.grey))
       ],
     );
   }
@@ -76,14 +77,15 @@ class ProductPage extends StatelessWidget {
               child: TitleDefault(_product['title']),
             ),
             _buildAddressPriceRow(),
+            SizedBox(height: 5.0),
+            Text(_product['description']),
             Container(
               padding: EdgeInsets.all(10.0),
               child: ElevatedButton(
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(
-                      Theme.of(context).colorScheme.secondaryVariant),
+                  backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
                 ),
-                child: Text('DELETE'),
+                child: Text('DELETE', style: TextStyle(color: Colors.white)),
                 onPressed: () => _showWarningDialog(context),
               ),
             ),
