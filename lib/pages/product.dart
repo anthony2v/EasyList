@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../widgets/products/address_tag.dart';
-import '../widgets/products/price_tag.dart';
 import '../widgets/ui_elements/title_default.dart';
 
 class ProductPage extends StatelessWidget {
