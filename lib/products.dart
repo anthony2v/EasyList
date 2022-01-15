@@ -29,8 +29,8 @@ class Products extends StatelessWidget {
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 6.0, vertical: 2.5),
                   decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.secondary,
-                      borderRadius: BorderRadius.circular(5.0)),
+                      color: Theme.of(context).colorScheme.secondaryVariant,
+                      borderRadius: BorderRadius.circular(6.0)),
                   child: Text(
                     '\$${products[index]['price'].toString()}',
                     style: TextStyle(color: Colors.white),
@@ -38,6 +38,14 @@ class Products extends StatelessWidget {
                 ),
               ],
             ),
+          ),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 6.0, vertical: 2.5),
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey, width: 1.0),
+              borderRadius: BorderRadius.circular(4.0),
+            ),
+            child: Text('Union Square, San Francisco'),
           ),
           ButtonBar(
             alignment: MainAxisAlignment.center,
