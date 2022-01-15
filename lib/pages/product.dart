@@ -64,7 +64,8 @@ class ProductPage extends StatelessWidget {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text(_product['title']),
+          iconTheme: IconThemeData(color: Colors.white),
+          title: Text(_product['title'], style: TextStyle(color: Colors.white)),
         ),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
