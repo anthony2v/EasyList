@@ -23,7 +23,7 @@ class Products extends StatelessWidget {
                   products[index]['title'],
                   style: TextStyle(
                       fontSize: 26.0,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w700,
                       fontFamily: 'Oswald'),
                 ),
                 SizedBox(width: 8.0),

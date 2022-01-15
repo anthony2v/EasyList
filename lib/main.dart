@@ -42,6 +42,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       // debugShowMaterialGrid: true,
       theme: ThemeData(
+        fontFamily: 'Oswald',
         brightness: Brightness.light,
         colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.orange)
             .copyWith(
