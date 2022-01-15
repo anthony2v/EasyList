@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:first_app/widgets/ui_elements/title_default.dart';
 
 class ProductPage extends StatelessWidget {
-  final String title;
-  final String imageUrl;
+  final String _title;
+  final String _imageUrl;
 
-  ProductPage(this.title, this.imageUrl);
+  ProductPage(this._title, this._imageUrl);
 
   _showWarningDialog(BuildContext context) {
     showDialog(
@@ -43,15 +44,15 @@ class ProductPage extends StatelessWidget {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text(title),
+          title: Text(_title),
         ),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Image.asset(imageUrl),
+            Image.asset(_imageUrl),
             Container(
               padding: EdgeInsets.all(10.0),
-              child: Text(title),
+              child: TitleDefault(_title),
             ),
             Container(
               padding: EdgeInsets.all(10.0),
