@@ -11,6 +11,10 @@ class ProductCard extends StatelessWidget {
 
   ProductCard(this._product, this._productIndex);
 
+  void _deleteProduct(bool confirm) {
+    print(confirm);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -36,7 +40,8 @@ class ProductCard extends StatelessWidget {
                   color: Theme.of(context).colorScheme.secondaryVariant,
                   icon: Icon(Icons.info),
                   onPressed: () => Navigator.pushNamed<bool>(
-                      context, '/product/' + _productIndex.toString())),
+                          context, '/product/' + _productIndex.toString())
+                      .then(_deleteProduct)),
               IconButton(
                   color: Colors.red,
                   onPressed: () {
