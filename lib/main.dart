@@ -44,7 +44,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         brightness: Brightness.light,
         colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.orange)
-            .copyWith(secondary: Colors.deepOrange),
+            .copyWith(secondary: Colors.purpleAccent),
       ),
       //home: AuthPage(), // Redundant, copy of '/': (BuildContext context) => ProductsPage(), in routes.
       routes: {
