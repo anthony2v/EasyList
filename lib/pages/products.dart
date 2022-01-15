@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import '../widgets/products/products.dart';
 
 class ProductsPage extends StatelessWidget {
-  final List<Map<String, dynamic>> products;
+  final List<Map<String, dynamic>> _products;
 
-  ProductsPage(this.products);
+  ProductsPage(this._products);
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +37,7 @@ class ProductsPage extends StatelessWidget {
           )
         ],
       ),
-      body: Products(products),
+      body: Products(_products),
     );
   }
 }
