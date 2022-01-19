@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class ProductCreatePage extends StatefulWidget {
-  final Function addProduct;
+  final Function _addProduct;
 
-  ProductCreatePage(this.addProduct);
+  ProductCreatePage(this._addProduct);
 
   @override
   State<StatefulWidget> createState() {
@@ -12,9 +12,13 @@ class ProductCreatePage extends StatefulWidget {
 }
 
 class _ProductCreatePageState extends State<ProductCreatePage> {
-  String _titleValue = '';
-  String _descriptionValue = '';
-  double _priceValue = 0.0;
+  final Map<String, dynamic> _newProduct = {
+    'title': '',
+    'description': '',
+    'price': 0.0,
+    'image': 'assets/food.jpg',
+    'address': 'Union Square, San Francisco'
+  };
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   Widget _buildTitleTextField() {
@@ -27,7 +31,7 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
         return null;
       },
       onSaved: (String value) {
-        _titleValue = value;
+        _newProduct['title'] = value;
       },
     );
   }
@@ -43,7 +47,7 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
         return null;
       },
       onSaved: (String value) {
-        _descriptionValue = value;
+        _newProduct['description'] = value;
       },
     );
   }
@@ -60,7 +64,7 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
         return null;
       },
       onSaved: (String value) {
-        _priceValue = double.parse(value);
+        _newProduct['price'] = double.parse(value);
       },
     );
   }
@@ -70,14 +74,7 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
       return;
     }
     _formKey.currentState.save();
-    final Map<String, dynamic> product = {
-      'title': _titleValue,
-      'description': _descriptionValue,
-      'price': _priceValue,
-      'image': 'assets/food.jpg',
-      'address': 'Union Square, San Francisco'
-    };
-    widget.addProduct(product);
+    widget._addProduct(_newProduct);
     Navigator.pushReplacementNamed(context, '/products');
   }
 
