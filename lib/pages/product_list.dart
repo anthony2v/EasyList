@@ -12,31 +12,40 @@ class ProductListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.builder(
         itemBuilder: (BuildContext context, int index) {
-          return Column(
-            children: [
-              ListTile(
-                leading: CircleAvatar(
-                    backgroundImage: AssetImage(_products[index]['image'])),
-                title: Text(_products[index]['title']),
-                subtitle:
-                    Text('\$${_products[index]['price'].toStringAsFixed(2)}'),
-                trailing: IconButton(
-                  icon: Icon(Icons.edit),
-                  onPressed: () => Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (BuildContext context) {
-                        return ProductEditPage(
-                          updateProduct: _updateProduct,
-                          product: _products[index],
-                          productIndex: index,
-                        );
-                      },
+          return Dismissible(
+            key: Key(_products[index]['title']),
+            background: Container(
+              padding: EdgeInsets.only(right: 10),
+              color: Color(0xFFe53935),
+              child: Icon(Icons.delete),
+              alignment: Alignment.centerRight,
+            ),
+            child: Column(
+              children: [
+                ListTile(
+                  leading: CircleAvatar(
+                      backgroundImage: AssetImage(_products[index]['image'])),
+                  title: Text(_products[index]['title']),
+                  subtitle:
+                      Text('\$${_products[index]['price'].toStringAsFixed(2)}'),
+                  trailing: IconButton(
+                    icon: Icon(Icons.edit),
+                    onPressed: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (BuildContext context) {
+                          return ProductEditPage(
+                            updateProduct: _updateProduct,
+                            product: _products[index],
+                            productIndex: index,
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ),
-              ),
-              Divider(),
-            ],
+                Divider(),
+              ],
+            ),
           );
         },
         itemCount: _products.length);
