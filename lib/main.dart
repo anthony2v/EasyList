@@ -1,10 +1,12 @@
 /* Packt Learn Flutter and Dart to Build iOS and Android Apps */
 import 'package:flutter/material.dart';
 // import 'package:flutter/rendering.dart';
-import 'pages/auth.dart';
-import 'pages/products_admin.dart';
-import 'pages/products.dart';
-import 'pages/product.dart';
+
+import './models/product.dart';
+import './pages/auth.dart';
+import './pages/products_admin.dart';
+import './pages/products.dart';
+import './pages/product.dart';
 
 void main() {
   // debugPaintSizeEnabled = true;
@@ -21,15 +23,15 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  List<Map<String, dynamic>> _products = [];
-  void _addProduct(Map<String, dynamic> product) {
+  List<Product> _products = [];
+  void _addProduct(Product product) {
     setState(() {
       _products.add(product);
     });
     print(_products);
   }
 
-  void _updateProduct(int index, Map<String, dynamic> updatedProduct) {
+  void _updateProduct(int index, Product updatedProduct) {
     setState(() {
       _products[index] = updatedProduct;
     });

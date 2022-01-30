@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '../../models/product.dart';
 import './product_card.dart';
 
 class Products extends StatelessWidget {
-  final List<Map<String, dynamic>> _products;
+  final List<Product> _products;
 
   // Constructor with a shortcut to automatically assign a variable to a local variable.
   Products(this._products) {
