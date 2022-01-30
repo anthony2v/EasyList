@@ -29,6 +29,12 @@ class _MyAppState extends State<MyApp> {
     print(_products);
   }
 
+  void _updateProduct(int index, Map<String, dynamic> updatedProduct) {
+    setState(() {
+      _products[index] = updatedProduct;
+    });
+  }
+
   void _deleteProduct(int index) {
     setState(() {
       print('delete item at ' + index.toString());
@@ -52,8 +58,8 @@ class _MyAppState extends State<MyApp> {
       //home: AuthPage(), // Redundant, copy of '/': (BuildContext context) => ProductsPage(), in routes.
       routes: {
         '/': (BuildContext context) => AuthPage(),
-        '/admin': (BuildContext context) =>
-            ProductsAdminPage(_addProduct, _deleteProduct, _products),
+        '/admin': (BuildContext context) => ProductsAdminPage(
+            _addProduct, _updateProduct, _deleteProduct, _products),
         '/products': (BuildContext context) => ProductsPage(_products),
       },
       onGenerateRoute: (RouteSettings settings) {
