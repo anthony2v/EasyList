@@ -1,6 +1,6 @@
-import 'package:first_app/models/product.dart';
 import 'package:flutter/material.dart';
 
+import '../models/product.dart';
 import '../widgets/products/products.dart';
 
 class ProductsPage extends StatelessWidget {
