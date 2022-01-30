@@ -7,33 +7,6 @@ class ProductPage extends StatelessWidget {
 
   ProductPage(this._product);
 
-  _showWarningDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Are you sure?'),
-          content: Text('This action cannot be undone!'),
-          actions: <Widget>[
-            TextButton(
-              child: Text('DISCARD'),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-            TextButton(
-              child: Text('CONTINUE'),
-              onPressed: () {
-                Navigator.pop(context);
-                Navigator.pop(context, true);
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   Widget _buildAddressPriceRow() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -77,16 +50,6 @@ class ProductPage extends StatelessWidget {
             _buildAddressPriceRow(),
             SizedBox(height: 5.0),
             Text(_product['description']),
-            Container(
-              padding: EdgeInsets.all(10.0),
-              child: ElevatedButton(
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
-                ),
-                child: Text('DELETE', style: TextStyle(color: Colors.white)),
-                onPressed: () => _showWarningDialog(context),
-              ),
-            ),
           ],
         ),
       ),
