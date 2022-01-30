@@ -27,8 +27,7 @@ class ProductListPage extends StatelessWidget {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildProductList() {
     return ListView.builder(
         itemBuilder: (BuildContext context, int index) {
           return Dismissible(
@@ -58,5 +57,12 @@ class ProductListPage extends StatelessWidget {
           );
         },
         itemCount: _products.length);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_products.isEmpty)
+      return Center(child: Text("No products found. Please add some."));
+    return _buildProductList();
   }
 }
