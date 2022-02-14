@@ -115,7 +115,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
   }
 
   void _submitForm(Function addProduct, Function updateProduct,
-      [int selectedProdutIndex]) {
+      [int selectedProductIndex]) {
     if (!_formKey.currentState.validate()) {
       return;
     }
@@ -126,7 +126,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
         imagePath: _productData['image'],
         price: _productData['price'],
         title: _productData['title']);
-    if (selectedProdutIndex == null)
+    if (selectedProductIndex == null)
       addProduct(product);
     else
       updateProduct(product);
