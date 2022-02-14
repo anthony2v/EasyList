@@ -28,6 +28,7 @@ class ProductListPage extends StatelessWidget {
     return ListView.builder(
         itemBuilder: (BuildContext context, int index) {
           return Dismissible(
+            direction: DismissDirection.endToStart,
             key: Key(products[index].title),
             onDismissed: (DismissDirection direction) {
               // both dismiss directions should delete the product
@@ -35,7 +36,7 @@ class ProductListPage extends StatelessWidget {
               model.deleteProduct();
             },
             background: Container(
-              padding: EdgeInsets.only(left: 10, right: 10),
+              padding: EdgeInsets.only(left: 250, right: 10),
               color: Color(0xFFe53935),
               child: Icon(Icons.delete, color: Colors.white),
             ),
