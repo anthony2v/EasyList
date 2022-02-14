@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
 
-import '../../models/product.dart';
 import './product_card.dart';
+import '../../models/product.dart';
+import '../../scoped-models/products.dart';
 
 class Products extends StatelessWidget {
-  final List<Product> _products;
-
   // Constructor with a shortcut to automatically assign a variable to a local variable.
-  Products(this._products) {
+  Products() {
     print('[Products Widget Constructor]');
   }
 
-  Widget _buildProductList() {
+  Widget _buildProductList(List<Product> products) {
     print('[Products Widget] _buildProductList()');
     Widget productCards;
-    if (_products.length > 0) {
+    if (products.length > 0) {
       productCards = ListView.builder(
         itemBuilder: (BuildContext context, index) =>
-            ProductCard(_products[index], index),
-        itemCount: _products.length,
+            ProductCard(products[index], index),
+        itemCount: products.length,
       );
     } else {
       productCards = Center(child: Text("No products found. Please add some."));
@@ -29,6 +29,9 @@ class Products extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print('[Products Widget] build()');
-    return _buildProductList();
+    return ScopedModelDescendant<ProductsModel>(
+        builder: (BuildContext context, Widget child, ProductsModel model) {
+      return _buildProductList(model.products);
+    });
   }
 }

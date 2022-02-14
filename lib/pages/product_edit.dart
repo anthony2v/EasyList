@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 import '../models/product.dart';
+import '../scoped-models/products.dart';
 
 class ProductEditPage extends StatefulWidget {
-  final Function addProduct;
-  final Function updateProduct;
   final Product product;
   final int productIndex;
 
-  ProductEditPage(
-      {this.addProduct, this.updateProduct, this.product, this.productIndex});
+  ProductEditPage({this.product, this.productIndex});
 
   @override
   State<StatefulWidget> createState() {
@@ -79,6 +78,19 @@ class _ProductEditPageState extends State<ProductEditPage> {
     );
   }
 
+  Widget _buildSubmitButton() {
+    return ScopedModelDescendant<ProductsModel>(
+        builder: (BuildContext context, Widget child, ProductsModel model) {
+      return ElevatedButton(
+        onPressed: () => _submitForm(model.addProduct, model.updateProduct),
+        child: Text(
+          'Save',
+          style: TextStyle(color: Colors.white),
+        ),
+      );
+    });
+  }
+
   Widget _buildPageContent(BuildContext context) {
     final double deviceWidth = MediaQuery.of(context).size.width;
     final double targetWidth = deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.95;
@@ -98,12 +110,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
               _buildDescriptionTextField(),
               _buildPriceTextField(),
               SizedBox(height: 5.0),
-              ElevatedButton(
-                  onPressed: _submitForm,
-                  child: Text(
-                    'Save',
-                    style: TextStyle(color: Colors.white),
-                  ))
+              _buildSubmitButton(),
             ],
           ),
         ),
@@ -111,7 +118,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
     );
   }
 
-  void _submitForm() {
+  void _submitForm(Function addProduct, Function updateProduct) {
     if (!_formKey.currentState.validate()) {
       return;
     }
@@ -123,9 +130,9 @@ class _ProductEditPageState extends State<ProductEditPage> {
         price: _productData['price'],
         title: _productData['title']);
     if (widget.product == null)
-      widget.addProduct(product);
+      addProduct(product);
     else
-      widget.updateProduct(widget.productIndex, product);
+      updateProduct(widget.productIndex, product);
     Navigator.pushReplacementNamed(context, '/products');
   }
 

@@ -9,6 +9,10 @@ class ProductsModel extends Model {
     return List.from(_products);
   }
 
+  int get size {
+    return _products.length;
+  }
+
   void addProduct(Product product) {
     _products.add(product);
   }
