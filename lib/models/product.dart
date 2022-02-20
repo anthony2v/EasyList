@@ -4,6 +4,7 @@ class Product {
   final String address;
   final String description;
   String imagePath;
+  bool isFavorite;
   double price;
   String title;
 
@@ -12,5 +13,6 @@ class Product {
       @required this.description,
       @required this.imagePath,
       @required this.price,
-      @required this.title});
+      @required this.title,
+      this.isFavorite = false});
 }
