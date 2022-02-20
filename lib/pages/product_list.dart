@@ -60,7 +60,7 @@ class ProductListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScopedModelDescendant(
+    return ScopedModelDescendant<ProductsModel>(
         builder: (BuildContext context, Widget child, ProductsModel model) {
       if (model.size == 0)
         return Center(child: Text("No products found. Please add some."));

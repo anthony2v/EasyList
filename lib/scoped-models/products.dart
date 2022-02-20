@@ -38,10 +38,9 @@ class ProductsModel extends Model {
     _selectedProductIndex = null;
   }
 
-  void toggleProductFavoriteFlag(bool isFavorite) {
+  void toggleProductFavoriteFlag() {
     if (selectedProduct == null) return;
-    final bool isCurrentlyFavorite = selectedProduct.isFavorite;
-    final bool newFavoriteStatus = !isCurrentlyFavorite;
+    final bool newFavoriteStatus = !selectedProduct.isFavorite;
     final Product updatedProduct = Product(
       address: selectedProduct.address,
       description: selectedProduct.description,
@@ -51,6 +50,7 @@ class ProductsModel extends Model {
       isFavorite: newFavoriteStatus,
     );
     updateProduct(updatedProduct);
+    notifyListeners();
   }
 
   void selectProduct(int index) {

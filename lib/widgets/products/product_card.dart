@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 import './address_tag.dart';
 import './price_tag.dart';
 import '../../models/product.dart';
 import '../ui_elements/title_default.dart';
+import '../../scoped-models/products.dart';
 
 class ProductCard extends StatelessWidget {
   final Product _product;
   final int _productIndex;
-  final bool _isFavorite = false;
 
   ProductCard(this._product, this._productIndex);
 
@@ -37,13 +38,18 @@ class ProductCard extends StatelessWidget {
             onPressed: () => Navigator.pushNamed<bool>(
                     context, '/product/' + _productIndex.toString())
                 .then(_deleteProduct)),
-        IconButton(
-            color: Colors.red,
-            onPressed: () {
-              print('Product favorited');
-              // TODO turn into stateful widget and flip _isFavorite
-            },
-            icon: Icon(_isFavorite ? Icons.favorite : Icons.favorite_border))
+        ScopedModelDescendant<ProductsModel>(
+            builder: (BuildContext context, Widget child, ProductsModel model) {
+          return IconButton(
+              color: Colors.red,
+              onPressed: () {
+                model.selectProduct(_productIndex);
+                model.toggleProductFavoriteFlag();
+              },
+              icon: Icon(model.products[_productIndex].isFavorite
+                  ? Icons.favorite
+                  : Icons.favorite_border));
+        }),
       ],
     );
   }
@@ -58,7 +64,9 @@ class ProductCard extends StatelessWidget {
               padding: EdgeInsets.only(top: 10.0),
               child: _buildTitlePriceRow()),
           AddressTag(_product.address),
-          _buildActionButtons(context),
+          _buildActionButtons(
+            context,
+          ),
         ],
       ),
     );
