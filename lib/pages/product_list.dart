@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 import './product_edit.dart';
-import '../scoped-models/products.dart';
+import '../scoped-models/main.dart';
 import '../models/product.dart';
 
 class ProductListPage extends StatelessWidget {
   ProductListPage();
 
-  Widget _buildEditButton(
-      BuildContext context, int index, ProductsModel model) {
+  Widget _buildEditButton(BuildContext context, int index, MainModel model) {
     return IconButton(
       icon: Icon(Icons.edit),
       onPressed: () {
@@ -23,7 +22,7 @@ class ProductListPage extends StatelessWidget {
     );
   }
 
-  Widget _buildProductList(ProductsModel model) {
+  Widget _buildProductList(MainModel model) {
     List<Product> products = model.displayedProducts;
     return ListView.builder(
         itemBuilder: (BuildContext context, int index) {
@@ -60,8 +59,8 @@ class ProductListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScopedModelDescendant<ProductsModel>(
-        builder: (BuildContext context, Widget child, ProductsModel model) {
+    return ScopedModelDescendant<MainModel>(
+        builder: (BuildContext context, Widget child, MainModel model) {
       if (model.size == 0)
         return Center(child: Text("No products found. Please add some."));
       return _buildProductList(model);

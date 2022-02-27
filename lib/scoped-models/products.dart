@@ -43,7 +43,6 @@ class ProductsModel extends Model {
   void updateProduct(Product updatedProduct) {
     _products[_selectedProductIndex] = updatedProduct;
     _selectedProductIndex = null;
-    notifyListeners();
   }
 
   void deleteProduct() {
