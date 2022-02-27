@@ -65,6 +65,7 @@ class ProductCard extends StatelessWidget {
               padding: EdgeInsets.only(top: 10.0),
               child: _buildTitlePriceRow()),
           AddressTag(_product.address),
+          Text(_product.userEmail),
           _buildActionButtons(
             context,
           ),

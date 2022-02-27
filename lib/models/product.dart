@@ -7,6 +7,8 @@ class Product {
   bool isFavorite;
   double price;
   String title;
+  String userEmail;
+  String userID;
 
   Product(
       {@required this.address,
@@ -14,5 +16,7 @@ class Product {
       @required this.imagePath,
       @required this.price,
       @required this.title,
+      @required this.userEmail,
+      @required this.userID,
       this.isFavorite = false});
 }
