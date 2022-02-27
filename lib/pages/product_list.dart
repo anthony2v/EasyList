@@ -24,7 +24,7 @@ class ProductListPage extends StatelessWidget {
   }
 
   Widget _buildProductList(ProductsModel model) {
-    List<Product> products = model.products;
+    List<Product> products = model.displayedProducts;
     return ListView.builder(
         itemBuilder: (BuildContext context, int index) {
           return Dismissible(
