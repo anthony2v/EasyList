@@ -20,7 +20,7 @@ class ConnectedProductsModel extends Model {
           'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.lnUwNlmh4RTB5_JLWA9XpAHaE8%26pid%3DApi&f=1',
       "price": price
     };
-    Uri url = Uri.parse(
+    final Uri url = Uri.parse(
         'https://easylist-4ab01-default-rtdb.firebaseio.com/products.json');
     http
         .post(url, body: json.encode(productData))
@@ -99,6 +99,15 @@ class ProductsModel extends ConnectedProductsModel {
   void deleteProduct() {
     _products.removeAt(_selectedProductIndex);
     notifyListeners();
+  }
+
+  void fetchProducts() {
+    final Uri url = Uri.parse(
+        'https://easylist-4ab01-default-rtdb.firebaseio.com/products.json');
+    http.get(url).then((http.Response response) {
+      final Map<String, dynamic> responseData = json.decode(response.body);
+      print(responseData);
+    });
   }
 
   void toggleProductFavoriteFlag() {
