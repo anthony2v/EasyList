@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:scoped_model/scoped_model.dart';
 
 import '../models/product.dart';
@@ -10,6 +13,16 @@ class ConnectedProductsModel extends Model {
 
   void addProduct(String title, String description, String image, double price,
       String address) {
+    final Map<String, dynamic> productData = {
+      "address": address,
+      "description": description,
+      "imagePath":
+          'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.lnUwNlmh4RTB5_JLWA9XpAHaE8%26pid%3DApi&f=1',
+      "price": price
+    };
+    Uri url = Uri.parse(
+        'https://easylist-4ab01-default-rtdb.firebaseio.com/products.json');
+    http.post(url, body: json.encode(productData));
     final Product newProduct = new Product(
         address: address,
         description: description,
