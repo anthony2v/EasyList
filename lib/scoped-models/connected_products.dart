@@ -22,17 +22,23 @@ class ConnectedProductsModel extends Model {
     };
     Uri url = Uri.parse(
         'https://easylist-4ab01-default-rtdb.firebaseio.com/products.json');
-    http.post(url, body: json.encode(productData));
-    final Product newProduct = new Product(
-        address: address,
-        description: description,
-        imagePath: image,
-        price: price,
-        title: title,
-        userEmail: _authenticatedUser.email,
-        userID: _authenticatedUser.id);
-    _products.add(newProduct);
-    notifyListeners();
+    http
+        .post(url, body: json.encode(productData))
+        .then((http.Response response) {
+      final Map<String, dynamic> responseData = json.decode(response.body);
+      if (responseData['name'] == null) print("Firebase product ID not found!");
+      final Product newProduct = new Product(
+          id: responseData['name'],
+          address: address,
+          description: description,
+          imagePath: image,
+          price: price,
+          title: title,
+          userEmail: _authenticatedUser.email,
+          userID: _authenticatedUser.id);
+      _products.add(newProduct);
+      notifyListeners();
+    });
   }
 }
 
