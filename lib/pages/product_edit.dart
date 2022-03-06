@@ -75,14 +75,19 @@ class _ProductEditPageState extends State<ProductEditPage> {
   Widget _buildSubmitButton() {
     return ScopedModelDescendant<MainModel>(
       builder: (BuildContext context, Widget child, MainModel model) {
-        return ElevatedButton(
-          onPressed: () => _submitForm(model.addProduct, model.updateProduct,
-              model.selectProduct, model.selectedProductIndex),
-          child: Text(
-            'Save',
-            style: TextStyle(color: Colors.white),
-          ),
-        );
+        return model.isLoading
+            ? Center(child: CircularProgressIndicator())
+            : ElevatedButton(
+                onPressed: () => _submitForm(
+                    model.addProduct,
+                    model.updateProduct,
+                    model.selectProduct,
+                    model.selectedProductIndex),
+                child: Text(
+                  'Save',
+                  style: TextStyle(color: Colors.white),
+                ),
+              );
       },
     );
   }
@@ -123,11 +128,13 @@ class _ProductEditPageState extends State<ProductEditPage> {
     _formKey.currentState.save();
     if (selectedProductIndex == null)
       addProduct(
-          _productData['title'],
-          _productData['description'],
-          _productData['image'],
-          _productData['price'],
-          _productData['address']);
+              _productData['title'],
+              _productData['description'],
+              _productData['image'],
+              _productData['price'],
+              _productData['address'])
+          .then((_) => Navigator.pushReplacementNamed(context, '/products')
+              .then((_) => selectProduct(null)));
     else
       updateProduct(
           _productData['title'],
@@ -135,8 +142,6 @@ class _ProductEditPageState extends State<ProductEditPage> {
           _productData['image'],
           _productData['price'],
           _productData['address']);
-    Navigator.pushReplacementNamed(context, '/products')
-        .then((_) => selectProduct(null));
   }
 
   @override

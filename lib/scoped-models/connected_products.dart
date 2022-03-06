@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:scoped_model/scoped_model.dart';
 
@@ -12,9 +11,10 @@ class ConnectedProductsModel extends Model {
   User _authenticatedUser;
   bool _isLoading = false;
 
-  void addProduct(String title, String description, String image, double price,
-      String address) {
+  Future<Null> addProduct(String title, String description, String image,
+      double price, String address) {
     _isLoading = true;
+    notifyListeners();
     final Map<String, dynamic> productData = {
       "title": title,
       "address": address,
@@ -27,7 +27,7 @@ class ConnectedProductsModel extends Model {
     };
     final Uri url = Uri.parse(
         'https://easylist-4ab01-default-rtdb.firebaseio.com/products.json');
-    http
+    return http
         .post(url, body: json.encode(productData))
         .then((http.Response response) {
       _isLoading = false;
@@ -114,6 +114,7 @@ class ProductsModel extends ConnectedProductsModel {
 
   void fetchProducts() {
     _isLoading = true;
+    notifyListeners();
     final Uri url = Uri.parse(
         'https://easylist-4ab01-default-rtdb.firebaseio.com/products.json');
     http.get(url).then((http.Response response) {
