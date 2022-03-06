@@ -110,6 +110,7 @@ class ProductsModel extends ConnectedProductsModel {
     http.get(url).then((http.Response response) {
       final Map<String, Map<String, dynamic>> productListData =
           Map.castFrom(json.decode(response.body));
+      final List<Product> fetchedProductList = [];
       productListData
           .forEach((String productID, Map<String, dynamic> productData) {
         final Product product = Product(
@@ -122,8 +123,10 @@ class ProductsModel extends ConnectedProductsModel {
           userEmail: productData['userEmail'],
           userID: productData['userID'],
         );
-        print(product.toString());
+        fetchedProductList.add(product);
       });
+      _products = fetchedProductList;
+      notifyListeners();
     });
   }
 

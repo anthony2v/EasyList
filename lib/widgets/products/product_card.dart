@@ -60,7 +60,7 @@ class ProductCard extends StatelessWidget {
     return Card(
       child: Column(
         children: <Widget>[
-          Image.asset(_product.imagePath),
+          Image.network(_product.imagePath),
           Padding(
               padding: EdgeInsets.only(top: 10.0),
               child: _buildTitlePriceRow()),
