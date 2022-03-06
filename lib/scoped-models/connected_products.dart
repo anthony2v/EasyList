@@ -14,11 +14,14 @@ class ConnectedProductsModel extends Model {
   void addProduct(String title, String description, String image, double price,
       String address) {
     final Map<String, dynamic> productData = {
+      "title": title,
       "address": address,
       "description": description,
       "imagePath":
           'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.lnUwNlmh4RTB5_JLWA9XpAHaE8%26pid%3DApi&f=1',
-      "price": price
+      "price": price,
+      "userEmail": _authenticatedUser.email,
+      "userID": _authenticatedUser.id
     };
     final Uri url = Uri.parse(
         'https://easylist-4ab01-default-rtdb.firebaseio.com/products.json');
@@ -105,8 +108,22 @@ class ProductsModel extends ConnectedProductsModel {
     final Uri url = Uri.parse(
         'https://easylist-4ab01-default-rtdb.firebaseio.com/products.json');
     http.get(url).then((http.Response response) {
-      final Map<String, dynamic> responseData = json.decode(response.body);
-      print(responseData);
+      final Map<String, Map<String, dynamic>> productListData =
+          Map.castFrom(json.decode(response.body));
+      productListData
+          .forEach((String productID, Map<String, dynamic> productData) {
+        final Product product = Product(
+          id: productID,
+          address: productData['address'],
+          title: productData['title'],
+          description: productData['description'],
+          price: productData['price'],
+          imagePath: productData['imagePath'],
+          userEmail: productData['userEmail'],
+          userID: productData['userID'],
+        );
+        print(product.toString());
+      });
     });
   }
 
