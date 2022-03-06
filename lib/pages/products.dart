@@ -42,25 +42,30 @@ class _ProductsPageState extends State<ProductsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Drawer(child: _buildSideDrawer(context)),
-      appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.white),
-        title: Text('EasyList', style: TextStyle(color: Colors.white)),
-        actions: [
-          ScopedModelDescendant<MainModel>(
-            builder: (BuildContext context, Widget child, MainModel model) {
-              return IconButton(
-                onPressed: () => model.toggleDisplayMode(),
-                icon: Icon(model.displayFavoritesOnly
-                    ? Icons.favorite
-                    : Icons.favorite_border),
-                color: Colors.white,
-              );
-            },
-          ),
-        ],
-      ),
-      body: Products(),
-    );
+        drawer: Drawer(child: _buildSideDrawer(context)),
+        appBar: AppBar(
+          iconTheme: IconThemeData(color: Colors.white),
+          title: Text('EasyList', style: TextStyle(color: Colors.white)),
+          actions: [
+            ScopedModelDescendant<MainModel>(
+              builder: (BuildContext context, Widget child, MainModel model) {
+                return IconButton(
+                  onPressed: () => model.toggleDisplayMode(),
+                  icon: Icon(model.displayFavoritesOnly
+                      ? Icons.favorite
+                      : Icons.favorite_border),
+                  color: Colors.white,
+                );
+              },
+            ),
+          ],
+        ),
+        body: ScopedModelDescendant<MainModel>(
+          builder: (BuildContext context, Widget child, MainModel model) {
+            return model.isLoading
+                ? Center(child: CircularProgressIndicator())
+                : Products();
+          },
+        ));
   }
 }

@@ -10,9 +10,11 @@ class ConnectedProductsModel extends Model {
   List<Product> _products = [];
   int _selectedProductIndex;
   User _authenticatedUser;
+  bool _isLoading = false;
 
   void addProduct(String title, String description, String image, double price,
       String address) {
+    _isLoading = true;
     final Map<String, dynamic> productData = {
       "title": title,
       "address": address,
@@ -28,6 +30,7 @@ class ConnectedProductsModel extends Model {
     http
         .post(url, body: json.encode(productData))
         .then((http.Response response) {
+      _isLoading = false;
       final Map<String, dynamic> responseData = json.decode(response.body);
       if (responseData['name'] == null) print("Firebase product ID not found!");
       final Product newProduct = new Product(
@@ -82,6 +85,10 @@ class ProductsModel extends ConnectedProductsModel {
     return _showFavorites;
   }
 
+  bool get isLoading {
+    return _isLoading;
+  }
+
   void updateProduct(String title, String description, String image,
       double price, String address,
       [bool isFavorite]) {
@@ -101,10 +108,12 @@ class ProductsModel extends ConnectedProductsModel {
 
   void deleteProduct() {
     _products.removeAt(_selectedProductIndex);
+    _selectedProductIndex = null;
     notifyListeners();
   }
 
   void fetchProducts() {
+    _isLoading = true;
     final Uri url = Uri.parse(
         'https://easylist-4ab01-default-rtdb.firebaseio.com/products.json');
     http.get(url).then((http.Response response) {
@@ -126,6 +135,7 @@ class ProductsModel extends ConnectedProductsModel {
         fetchedProductList.add(product);
       });
       _products = fetchedProductList;
+      _isLoading = false;
       notifyListeners();
     });
   }
