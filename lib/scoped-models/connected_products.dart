@@ -118,26 +118,29 @@ class ProductsModel extends ConnectedProductsModel {
     final Uri url = Uri.parse(
         'https://easylist-4ab01-default-rtdb.firebaseio.com/products.json');
     http.get(url).then((http.Response response) {
-      if (response.body != "null") {
-        final Map<String, Map<String, dynamic>> productListData =
-            Map.castFrom(json.decode(response.body));
-        final List<Product> fetchedProductList = [];
-        productListData
-            .forEach((String productID, Map<String, dynamic> productData) {
-          final Product product = Product(
-            id: productID,
-            address: productData['address'],
-            title: productData['title'],
-            description: productData['description'],
-            price: productData['price'],
-            imagePath: productData['imagePath'],
-            userEmail: productData['userEmail'],
-            userID: productData['userID'],
-          );
-          fetchedProductList.add(product);
-        });
-        _products = fetchedProductList;
+      if (response.body == "null") {
+        _isLoading = false;
+        notifyListeners();
+        return;
       }
+      final Map<String, Map<String, dynamic>> productListData =
+          Map.castFrom(json.decode(response.body));
+      final List<Product> fetchedProductList = [];
+      productListData
+          .forEach((String productID, Map<String, dynamic> productData) {
+        final Product product = Product(
+          id: productID,
+          address: productData['address'],
+          title: productData['title'],
+          description: productData['description'],
+          price: productData['price'],
+          imagePath: productData['imagePath'],
+          userEmail: productData['userEmail'],
+          userID: productData['userID'],
+        );
+        fetchedProductList.add(product);
+      });
+      _products = fetchedProductList;
       _isLoading = false;
       notifyListeners();
     });
