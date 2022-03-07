@@ -127,9 +127,17 @@ class ProductsModel extends ConnectedProductsModel {
   }
 
   void deleteProduct() {
+    _isLoading = true;
+    final String deletedProductID = selectedProduct.id;
     _products.removeAt(_selectedProductIndex);
     _selectedProductIndex = null;
     notifyListeners();
+    final Uri url = Uri.parse(
+        'https://easylist-4ab01-default-rtdb.firebaseio.com/products/${deletedProductID}.json');
+    http.delete(url).then((http.Response response) {
+      _isLoading = false;
+      notifyListeners();
+    });
   }
 
   void fetchProducts() {
