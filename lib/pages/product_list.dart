@@ -23,11 +23,11 @@ class _ProductListPageState extends State<ProductListPage> {
     super.initState();
   }
 
-  Widget _buildEditButton(BuildContext context, int index, MainModel model) {
+  Widget _buildEditButton(BuildContext context, String id, MainModel model) {
     return IconButton(
       icon: Icon(Icons.edit),
       onPressed: () {
-        model.selectProduct(index);
+        model.selectProduct(id);
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (BuildContext context) => ProductEditPage(),
@@ -46,7 +46,7 @@ class _ProductListPageState extends State<ProductListPage> {
             key: Key(products[index].title),
             onDismissed: (DismissDirection direction) {
               // both dismiss directions should delete the product
-              model.selectProduct(index);
+              model.selectProduct(products[index].id);
               model.deleteProduct();
             },
             background: Container(
@@ -62,7 +62,8 @@ class _ProductListPageState extends State<ProductListPage> {
                   title: Text(products[index].title),
                   subtitle:
                       Text('\$${products[index].price.toStringAsFixed(2)}'),
-                  trailing: _buildEditButton(context, index, model),
+                  trailing:
+                      _buildEditButton(context, products[index].id, model),
                 ),
                 Divider(),
               ],

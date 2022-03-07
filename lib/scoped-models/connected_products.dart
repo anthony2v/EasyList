@@ -6,8 +6,8 @@ import '../models/product.dart';
 import '../models/user.dart';
 
 class ConnectedProductsModel extends Model {
-  List<Product> _products = [];
-  int _selectedProductIndex;
+  Map<String, Product> _products = {};
+  String _selectedProductID;
   User _authenticatedUser;
   bool _isLoading = false;
 
@@ -42,7 +42,7 @@ class ConnectedProductsModel extends Model {
           title: title,
           userEmail: _authenticatedUser.email,
           userID: _authenticatedUser.id);
-      _products.add(newProduct);
+      _products[newProduct.id] = newProduct;
       notifyListeners();
     });
   }
@@ -58,27 +58,32 @@ class UserModel extends ConnectedProductsModel {
 class ProductsModel extends ConnectedProductsModel {
   bool _showFavorites = false;
 
-  List<Product> get allProducts {
-    return List.from(_products);
+  Map<String, Product> get allProducts {
+    return Map.from(_products);
   }
 
   List<Product> get displayedProducts {
-    if (_showFavorites)
-      return _products.where((Product element) => element.isFavorite).toList();
-    return List.from(_products);
+    final List<Product> productsToDisplay = [];
+    if (_showFavorites) {
+      _products.forEach((_, Product product) {
+        if (product.isFavorite) productsToDisplay.add(product);
+      });
+      return List.from(productsToDisplay);
+    }
+    return List.from(_products.values);
   }
 
   int get size {
     return _products.length;
   }
 
-  int get selectedProductIndex {
-    return _selectedProductIndex;
+  String get selectedProductID {
+    return _selectedProductID;
   }
 
   Product get selectedProduct {
-    if (_selectedProductIndex == null) return null;
-    return _products[_selectedProductIndex];
+    if (_selectedProductID == null) return null;
+    return _products[_selectedProductID];
   }
 
   bool get displayFavoritesOnly {
@@ -121,7 +126,7 @@ class ProductsModel extends ConnectedProductsModel {
               isFavorite != null ? isFavorite : selectedProduct.isFavorite,
           userEmail: selectedProduct.userEmail,
           userID: selectedProduct.userID);
-      _products[_selectedProductIndex] = updatedProduct;
+      _products[_selectedProductID] = updatedProduct;
       notifyListeners();
     });
   }
@@ -129,8 +134,8 @@ class ProductsModel extends ConnectedProductsModel {
   void deleteProduct() {
     _isLoading = true;
     final String deletedProductID = selectedProduct.id;
-    _products.removeAt(_selectedProductIndex);
-    _selectedProductIndex = null;
+    _products.remove(_selectedProductID);
+    _selectedProductID = null;
     notifyListeners();
     final Uri url = Uri.parse(
         'https://easylist-4ab01-default-rtdb.firebaseio.com/products/${deletedProductID}.json');
@@ -153,7 +158,7 @@ class ProductsModel extends ConnectedProductsModel {
       }
       final Map<String, Map<String, dynamic>> productListData =
           Map.castFrom(json.decode(response.body));
-      final List<Product> fetchedProductList = [];
+      final Map<String, Product> fetchedProductMap = {};
       productListData
           .forEach((String productID, Map<String, dynamic> productData) {
         final Product product = Product(
@@ -166,9 +171,9 @@ class ProductsModel extends ConnectedProductsModel {
           userEmail: productData['userEmail'],
           userID: productData['userID'],
         );
-        fetchedProductList.add(product);
+        fetchedProductMap[productID] = product;
       });
-      _products = fetchedProductList;
+      _products = fetchedProductMap;
       _isLoading = false;
       notifyListeners();
     });
@@ -176,7 +181,6 @@ class ProductsModel extends ConnectedProductsModel {
 
   void toggleProductFavoriteFlag() {
     if (selectedProduct == null) return;
-    // TODO fix this to take into account displayed products
     final bool newFavoriteStatus = !selectedProduct.isFavorite;
     updateProduct(
       selectedProduct.title,
@@ -189,8 +193,8 @@ class ProductsModel extends ConnectedProductsModel {
     notifyListeners();
   }
 
-  void selectProduct(int index) {
-    _selectedProductIndex = index;
+  void selectProduct(String id) {
+    _selectedProductID = id;
     notifyListeners();
   }
 

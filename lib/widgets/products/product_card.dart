@@ -10,9 +10,8 @@ import '../../scoped-models/main.dart';
 
 class ProductCard extends StatelessWidget {
   final Product _product;
-  final int _productIndex;
 
-  ProductCard(this._product, this._productIndex);
+  ProductCard(this._product);
 
   void _deleteProduct(bool confirm) {
     print(confirm);
@@ -36,20 +35,19 @@ class ProductCard extends StatelessWidget {
         IconButton(
             color: Theme.of(context).colorScheme.secondaryVariant,
             icon: Icon(Icons.info),
-            onPressed: () => Navigator.pushNamed<bool>(
-                    context, '/product/' + _productIndex.toString())
-                .then(_deleteProduct)),
+            onPressed: () =>
+                Navigator.pushNamed<bool>(context, '/product/' + _product.id)
+                    .then(_deleteProduct)),
         ScopedModelDescendant<MainModel>(
             builder: (BuildContext context, Widget child, MainModel model) {
           return IconButton(
             color: Colors.red,
             onPressed: () {
-              model.selectProduct(_productIndex);
+              model.selectProduct(_product.id);
               model.toggleProductFavoriteFlag();
             },
-            icon: Icon(model.displayedProducts[_productIndex].isFavorite
-                ? Icons.favorite
-                : Icons.favorite_border),
+            icon: Icon(
+                _product.isFavorite ? Icons.favorite : Icons.favorite_border),
           );
         }),
       ],

@@ -52,11 +52,12 @@ class _MyAppState extends State<MyApp> {
             return null;
           }
           if (pathElements[1] == 'product') {
-            final int index = int.parse(pathElements[2]);
-            print('[Main] build(): index: ');
-            print(index);
+            final String productID = pathElements[2];
+            mainModel.selectProduct(productID);
+            print('[Main] build(): id: ');
+            print(productID);
             return MaterialPageRoute<bool>(
-              builder: (BuildContext context) => ProductPage(index),
+              builder: (BuildContext context) => ProductPage(),
             );
           }
           return null;
