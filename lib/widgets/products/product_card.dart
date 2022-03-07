@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -60,7 +61,9 @@ class ProductCard extends StatelessWidget {
     return Card(
       child: Column(
         children: <Widget>[
-          Image.network(_product.imagePath),
+          CachedNetworkImage(
+              imageUrl: _product.imagePath,
+              placeholder: (context, url) => const CircularProgressIndicator()),
           Padding(
               padding: EdgeInsets.only(top: 10.0),
               child: _buildTitlePriceRow()),
