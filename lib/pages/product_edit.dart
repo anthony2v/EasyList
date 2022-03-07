@@ -16,7 +16,8 @@ class _ProductEditPageState extends State<ProductEditPage> {
     'title': '',
     'description': '',
     'price': 0.0,
-    'image': 'assets/food.jpg',
+    'image':
+        'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.lnUwNlmh4RTB5_JLWA9XpAHaE8%26pid%3DApi&f=1',
     'address': 'Union Square, San Francisco'
   };
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -137,11 +138,13 @@ class _ProductEditPageState extends State<ProductEditPage> {
               .then((_) => selectProduct(null)));
     else
       updateProduct(
-          _productData['title'],
-          _productData['description'],
-          _productData['image'],
-          _productData['price'],
-          _productData['address']);
+              _productData['title'],
+              _productData['description'],
+              _productData['image'],
+              _productData['price'],
+              _productData['address'])
+          .then((_) => Navigator.pushReplacementNamed(context, '/products')
+              .then((_) => selectProduct(null)));
   }
 
   @override

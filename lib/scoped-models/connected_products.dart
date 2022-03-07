@@ -89,21 +89,41 @@ class ProductsModel extends ConnectedProductsModel {
     return _isLoading;
   }
 
-  void updateProduct(String title, String description, String image,
+  Future<Null> updateProduct(String title, String description, String image,
       double price, String address,
       [bool isFavorite]) {
-    final Product updatedProduct = new Product(
-        address: address,
-        description: description,
-        imagePath: image,
-        price: price,
-        title: title,
-        isFavorite:
-            isFavorite != null ? isFavorite : selectedProduct.isFavorite,
-        userEmail: selectedProduct.userEmail,
-        userID: selectedProduct.userID);
-    _products[_selectedProductIndex] = updatedProduct;
+    _isLoading = true;
     notifyListeners();
+    final Map<String, dynamic> productData = {
+      "title": title,
+      "address": address,
+      "description": description,
+      "imagePath":
+          'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.lnUwNlmh4RTB5_JLWA9XpAHaE8%26pid%3DApi&f=1',
+      "price": price,
+      "userEmail": _authenticatedUser.email,
+      "userID": _authenticatedUser.id
+    };
+    final Uri url = Uri.parse(
+        'https://easylist-4ab01-default-rtdb.firebaseio.com/products/${selectedProduct.id}.json');
+    return http
+        .put(url, body: json.encode(productData))
+        .then((http.Response response) {
+      _isLoading = false;
+      final Product updatedProduct = new Product(
+          id: selectedProduct.id,
+          address: address,
+          description: description,
+          imagePath: image,
+          price: price,
+          title: title,
+          isFavorite:
+              isFavorite != null ? isFavorite : selectedProduct.isFavorite,
+          userEmail: selectedProduct.userEmail,
+          userID: selectedProduct.userID);
+      _products[_selectedProductIndex] = updatedProduct;
+      notifyListeners();
+    });
   }
 
   void deleteProduct() {
