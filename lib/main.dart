@@ -43,7 +43,7 @@ class _MyAppState extends State<MyApp> {
         //home: AuthPage(), // Redundant, copy of '/': (BuildContext context) => ProductsPage(), in routes.
         routes: {
           '/': (BuildContext context) => AuthPage(),
-          '/admin': (BuildContext context) => ProductsAdminPage(),
+          '/admin': (BuildContext context) => ProductsAdminPage(mainModel),
           '/products': (BuildContext context) => ProductsPage(mainModel),
         },
         onGenerateRoute: (RouteSettings settings) {
