@@ -140,12 +140,12 @@ class ProductsModel extends ConnectedProductsModel {
     });
   }
 
-  void fetchProducts() {
+  Future<Null> fetchProducts() {
     _isLoading = true;
     notifyListeners();
     final Uri url = Uri.parse(
         'https://easylist-4ab01-default-rtdb.firebaseio.com/products.json');
-    http.get(url).then((http.Response response) {
+    return http.get(url).then((http.Response response) {
       if (response.body == "null") {
         _isLoading = false;
         notifyListeners();

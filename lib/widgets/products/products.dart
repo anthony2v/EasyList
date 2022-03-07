@@ -11,19 +11,20 @@ class Products extends StatelessWidget {
     print('[Products Widget Constructor]');
   }
 
-  Widget _buildProductList(List<Product> products) {
+  Widget _buildProductList(MainModel model) {
     print('[Products Widget] _buildProductList()');
     Widget productCards;
-    if (products.length > 0) {
+    if (model.displayedProducts.length > 0) {
       productCards = ListView.builder(
         itemBuilder: (BuildContext context, index) =>
-            ProductCard(products[index], index),
-        itemCount: products.length,
+            ProductCard(model.displayedProducts[index], index),
+        itemCount: model.displayedProducts.length,
       );
     } else {
       productCards = Center(child: Text("No products found. Please add some."));
     }
-    return productCards;
+    return RefreshIndicator(
+        onRefresh: model.fetchProducts, child: productCards);
   }
 
   @override
@@ -31,7 +32,7 @@ class Products extends StatelessWidget {
     print('[Products Widget] build()');
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
-      return _buildProductList(model.displayedProducts);
+      return _buildProductList(model);
     });
   }
 }
