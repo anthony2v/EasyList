@@ -28,11 +28,13 @@ class _ProductListPageState extends State<ProductListPage> {
       icon: Icon(Icons.edit),
       onPressed: () {
         model.selectProduct(id);
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (BuildContext context) => ProductEditPage(),
-          ),
-        );
+        Navigator.of(context)
+            .push(
+              MaterialPageRoute(
+                builder: (BuildContext context) => ProductEditPage(),
+              ),
+            )
+            .then((_) => model.selectProduct(null));
       },
     );
   }

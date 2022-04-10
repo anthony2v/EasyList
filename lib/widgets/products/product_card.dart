@@ -13,10 +13,6 @@ class ProductCard extends StatelessWidget {
 
   ProductCard(this._product);
 
-  void _deleteProduct(bool confirm) {
-    print(confirm);
-  }
-
   Widget _buildTitlePriceRow() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -36,8 +32,7 @@ class ProductCard extends StatelessWidget {
             color: Theme.of(context).colorScheme.secondaryVariant,
             icon: Icon(Icons.info),
             onPressed: () =>
-                Navigator.pushNamed<bool>(context, '/product/' + _product.id)
-                    .then(_deleteProduct)),
+                Navigator.pushNamed<bool>(context, '/product/' + _product.id)),
         ScopedModelDescendant<MainModel>(
             builder: (BuildContext context, Widget child, MainModel model) {
           return IconButton(
