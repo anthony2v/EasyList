@@ -134,8 +134,24 @@ class _ProductEditPageState extends State<ProductEditPage> {
               _productData['image'],
               _productData['price'],
               _productData['address'])
-          .then((_) => Navigator.pushReplacementNamed(context, '/products')
-              .then((_) => selectProduct(null)));
+          .then((bool success) {
+        if (success) {
+          Navigator.pushReplacementNamed(context, '/products')
+              .then((_) => selectProduct(null));
+        } else {
+          showDialog(
+              context: context,
+              builder: (BuildContext context) => AlertDialog(
+                    title: Text("Something went wrong!"),
+                    content: Text("Please try again."),
+                    actions: <Widget>[
+                      OutlinedButton(
+                          onPressed: () => Navigator.of(context).pop(),
+                          child: Text("Okay"))
+                    ],
+                  ));
+        }
+      });
     else
       updateProduct(
               _productData['title'],

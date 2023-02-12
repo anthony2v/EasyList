@@ -11,7 +11,7 @@ mixin ConnectedProductsModel on Model {
   User _authenticatedUser;
   bool _isLoading = false;
 
-  Future<Null> addProduct(String title, String description, String image,
+  Future<bool> addProduct(String title, String description, String image,
       double price, String address) {
     _isLoading = true;
     notifyListeners();
@@ -30,7 +30,11 @@ mixin ConnectedProductsModel on Model {
     return http
         .post(url, body: json.encode(productData))
         .then((http.Response response) {
-      _isLoading = false;
+      if (response.statusCode != 200 && response.statusCode != 201) {
+        _isLoading = false;
+        notifyListeners();
+        return false;
+      }
       final Map<String, dynamic> responseData = json.decode(response.body);
       if (responseData['name'] == null) print("Firebase product ID not found!");
       final Product newProduct = new Product(
@@ -43,7 +47,13 @@ mixin ConnectedProductsModel on Model {
           userEmail: _authenticatedUser.email,
           userID: _authenticatedUser.id);
       _products[newProduct.id] = newProduct;
+      _isLoading = false;
       notifyListeners();
+      return true;
+    }).catchError((error) {
+      _isLoading = false;
+      notifyListeners();
+      return false;
     });
   }
 }
@@ -94,7 +104,7 @@ mixin ProductsModel on ConnectedProductsModel {
     return _isLoading;
   }
 
-  Future<Null> updateProduct(String title, String description, String image,
+  Future<bool> updateProduct(String title, String description, String image,
       double price, String address,
       [bool isFavorite]) {
     _isLoading = true;
@@ -114,7 +124,12 @@ mixin ProductsModel on ConnectedProductsModel {
     return http
         .put(url, body: json.encode(productData))
         .then((http.Response response) {
-      _isLoading = false;
+      if (response.statusCode != 200) {
+        _isLoading = false;
+        notifyListeners();
+        return false;
+      }
+
       final Product updatedProduct = new Product(
           id: selectedProduct.id,
           address: address,
@@ -127,11 +142,17 @@ mixin ProductsModel on ConnectedProductsModel {
           userEmail: selectedProduct.userEmail,
           userID: selectedProduct.userID);
       _products[_selectedProductID] = updatedProduct;
+      _isLoading = false;
       notifyListeners();
+      return true;
+    }).catchError((error) {
+      _isLoading = false;
+      notifyListeners();
+      return false;
     });
   }
 
-  void deleteProduct() {
+  Future<bool> deleteProduct() {
     _isLoading = true;
     final String deletedProductID = selectedProduct.id;
     _products.remove(_selectedProductID);
@@ -139,9 +160,19 @@ mixin ProductsModel on ConnectedProductsModel {
     notifyListeners();
     final Uri url = Uri.parse(
         'https://easylist-4ab01-default-rtdb.firebaseio.com/products/${deletedProductID}.json');
-    http.delete(url).then((http.Response response) {
+    return http.delete(url).then((http.Response response) {
+      if (response.statusCode != 200) {
+        _isLoading = false;
+        notifyListeners();
+        return false;
+      }
       _isLoading = false;
       notifyListeners();
+      return true;
+    }).catchError((error) {
+      _isLoading = false;
+      notifyListeners();
+      return false;
     });
   }
 
@@ -150,7 +181,7 @@ mixin ProductsModel on ConnectedProductsModel {
     notifyListeners();
     final Uri url = Uri.parse(
         'https://easylist-4ab01-default-rtdb.firebaseio.com/products.json');
-    return http.get(url).then((http.Response response) {
+    return http.get(url).then<Null>((http.Response response) {
       if (response.body == "null") {
         _isLoading = false;
         notifyListeners();
@@ -190,7 +221,6 @@ mixin ProductsModel on ConnectedProductsModel {
       selectedProduct.address,
       newFavoriteStatus,
     );
-    notifyListeners();
   }
 
   void selectProduct(String id) {
