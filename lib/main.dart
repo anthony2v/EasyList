@@ -53,11 +53,10 @@ class _MyAppState extends State<MyApp> {
           }
           if (pathElements[1] == 'product') {
             final String productID = pathElements[2];
-            mainModel.selectProduct(productID);
-            print('[Main] build(): id: ');
-            print(productID);
+            print("[Main] build(): id:${productID}");
             return MaterialPageRoute<bool>(
-              builder: (BuildContext context) => ProductPage(),
+              builder: (BuildContext context) =>
+                  ProductPage(mainModel.allProducts[productID]),
             );
           }
           return null;

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:scoped_model/scoped_model.dart';
 
 import '../models/product.dart';
-import '../scoped-models/main.dart';
 import '../widgets/ui_elements/title_default.dart';
 
 class ProductPage extends StatelessWidget {
+  final Product _product;
+
+  ProductPage(this._product);
+
   Widget _buildAddressPriceRow(String productAddress, double productPrice) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -26,29 +28,24 @@ class ProductPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScopedModelDescendant<MainModel>(
-      builder: (BuildContext context, Widget child, MainModel model) {
-        final Product product = model.selectedProduct;
-        return Scaffold(
-          appBar: AppBar(
-            iconTheme: IconThemeData(color: Colors.white),
-            title: Text(product.title, style: TextStyle(color: Colors.white)),
+    return Scaffold(
+      appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.white),
+        title: Text(_product.title, style: TextStyle(color: Colors.white)),
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Image.network(_product.imagePath),
+          Container(
+            padding: EdgeInsets.all(10.0),
+            child: TitleDefault(_product.title),
           ),
-          body: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Image.network(product.imagePath),
-              Container(
-                padding: EdgeInsets.all(10.0),
-                child: TitleDefault(product.title),
-              ),
-              _buildAddressPriceRow(product.address, product.price),
-              SizedBox(height: 5.0),
-              Text(product.description),
-            ],
-          ),
-        );
-      },
+          _buildAddressPriceRow(_product.address, _product.price),
+          SizedBox(height: 5.0),
+          Text(_product.description),
+        ],
+      ),
     );
   }
 }

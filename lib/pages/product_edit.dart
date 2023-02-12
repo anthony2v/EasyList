@@ -90,7 +90,6 @@ class _ProductEditPageState extends State<ProductEditPage> {
                 ),
               );
       },
-      rebuildOnChange: false,
     );
   }
 
