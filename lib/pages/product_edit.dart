@@ -154,7 +154,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
         final Widget pageContent =
             _buildPageContent(context, model.selectedProduct);
         return model.selectedProductID == null
-            ? pageContent
+            ? Material(child: pageContent)
             : Scaffold(
                 appBar: AppBar(
                   iconTheme: IconThemeData(color: Colors.white),
