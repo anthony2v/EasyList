@@ -5,7 +5,7 @@ import 'package:scoped_model/scoped_model.dart';
 import '../models/product.dart';
 import '../models/user.dart';
 
-class ConnectedProductsModel extends Model {
+mixin ConnectedProductsModel on Model {
   Map<String, Product> _products = {};
   String _selectedProductID;
   User _authenticatedUser;
@@ -48,14 +48,14 @@ class ConnectedProductsModel extends Model {
   }
 }
 
-class UserModel extends ConnectedProductsModel {
+mixin UserModel on ConnectedProductsModel {
   void login(String email, String password) {
     _authenticatedUser =
         User(id: "f13jfi13g4g2g3fwe", email: email, password: password);
   }
 }
 
-class ProductsModel extends ConnectedProductsModel {
+mixin ProductsModel on ConnectedProductsModel {
   bool _showFavorites = false;
 
   Map<String, Product> get allProducts {
