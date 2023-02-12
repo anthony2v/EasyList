@@ -10,7 +10,7 @@ class PriceTag extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 6.0, vertical: 2.5),
       decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.secondaryVariant,
+          color: Theme.of(context).colorScheme.secondaryContainer,
           borderRadius: BorderRadius.circular(6.0)),
       child: Text(
         '\$$_price',

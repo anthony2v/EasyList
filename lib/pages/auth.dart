@@ -75,7 +75,7 @@ class _AuthPageState extends State<AuthPage> {
         style:
             TextStyle(color: _acceptTerms ? Colors.black : Color(0xFFe53935)),
       ),
-      activeColor: Theme.of(context).colorScheme.secondaryVariant,
+      activeColor: Theme.of(context).colorScheme.secondaryContainer,
       inactiveThumbColor: Color(0xFFe53935),
     );
   }

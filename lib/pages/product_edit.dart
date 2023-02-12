@@ -90,6 +90,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
                 ),
               );
       },
+      rebuildOnChange: false,
     );
   }
 
@@ -153,7 +154,6 @@ class _ProductEditPageState extends State<ProductEditPage> {
       builder: (BuildContext context, Widget child, MainModel model) {
         final Widget pageContent =
             _buildPageContent(context, model.selectedProduct);
-        _buildPageContent(context, model.selectedProduct);
         return model.selectedProductID == null
             ? pageContent
             : Scaffold(

@@ -38,7 +38,7 @@ class _MyAppState extends State<MyApp> {
           colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.orange)
               .copyWith(
                   secondary: Colors.deepOrangeAccent,
-                  secondaryVariant: Colors.purpleAccent),
+                  secondaryContainer: Colors.purpleAccent),
         ),
         //home: AuthPage(), // Redundant, copy of '/': (BuildContext context) => ProductsPage(), in routes.
         routes: {

@@ -37,7 +37,7 @@ class ProductsAdminPage extends StatelessWidget {
           iconTheme: IconThemeData(color: Colors.white),
           title: Text('Manage Products', style: TextStyle(color: Colors.white)),
           bottom: TabBar(
-            indicatorColor: Theme.of(context).colorScheme.secondaryVariant,
+            indicatorColor: Theme.of(context).colorScheme.secondaryContainer,
             tabs: <Widget>[
               Tab(
                 text: 'Create Product',

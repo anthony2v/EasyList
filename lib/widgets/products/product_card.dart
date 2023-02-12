@@ -29,7 +29,7 @@ class ProductCard extends StatelessWidget {
       alignment: MainAxisAlignment.center,
       children: <Widget>[
         IconButton(
-            color: Theme.of(context).colorScheme.secondaryVariant,
+            color: Theme.of(context).colorScheme.secondaryContainer,
             icon: Icon(Icons.info),
             onPressed: () =>
                 Navigator.pushNamed<bool>(context, '/product/' + _product.id)),
