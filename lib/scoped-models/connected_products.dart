@@ -12,7 +12,7 @@ mixin ConnectedProductsModel on Model {
   bool _isLoading = false;
 
   Future<bool> addProduct(String title, String description, String image,
-      double price, String address) {
+      double price, String address) async {
     _isLoading = true;
     notifyListeners();
     final Map<String, dynamic> productData = {
@@ -27,13 +27,11 @@ mixin ConnectedProductsModel on Model {
     };
     final Uri url = Uri.parse(
         'https://easylist-4ab01-default-rtdb.firebaseio.com/products.json');
-    return http
-        .post(url, body: json.encode(productData))
-        .then((http.Response response) {
+    try {
+      final http.Response response =
+          await http.post(url, body: json.encode(productData));
       if (response.statusCode != 200 && response.statusCode != 201) {
-        _isLoading = false;
-        notifyListeners();
-        return false;
+        throw new Exception("Operation did not complete successfully");
       }
       final Map<String, dynamic> responseData = json.decode(response.body);
       if (responseData['name'] == null) print("Firebase product ID not found!");
@@ -50,11 +48,11 @@ mixin ConnectedProductsModel on Model {
       _isLoading = false;
       notifyListeners();
       return true;
-    }).catchError((error) {
+    } catch (error) {
       _isLoading = false;
       notifyListeners();
       return false;
-    });
+    }
   }
 }
 
