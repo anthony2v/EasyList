@@ -10,50 +10,6 @@ mixin ConnectedProductsModel on Model {
   String _selectedProductID;
   User _authenticatedUser;
   bool _isLoading = false;
-
-  Future<bool> addProduct(String title, String description, String image,
-      double price, String address) async {
-    _isLoading = true;
-    notifyListeners();
-    final Map<String, dynamic> productData = {
-      "title": title,
-      "address": address,
-      "description": description,
-      "imagePath":
-          'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.lnUwNlmh4RTB5_JLWA9XpAHaE8%26pid%3DApi&f=1',
-      "price": price,
-      "userEmail": _authenticatedUser.email,
-      "userID": _authenticatedUser.id
-    };
-    final Uri url = Uri.parse(
-        'https://easylist-4ab01-default-rtdb.firebaseio.com/products.json');
-    try {
-      final http.Response response =
-          await http.post(url, body: json.encode(productData));
-      if (response.statusCode != 200 && response.statusCode != 201) {
-        throw new Exception("Operation did not complete successfully");
-      }
-      final Map<String, dynamic> responseData = json.decode(response.body);
-      if (responseData['name'] == null) print("Firebase product ID not found!");
-      final Product newProduct = new Product(
-          id: responseData['name'],
-          address: address,
-          description: description,
-          imagePath: image,
-          price: price,
-          title: title,
-          userEmail: _authenticatedUser.email,
-          userID: _authenticatedUser.id);
-      _products[newProduct.id] = newProduct;
-      _isLoading = false;
-      notifyListeners();
-      return true;
-    } catch (error) {
-      _isLoading = false;
-      notifyListeners();
-      return false;
-    }
-  }
 }
 
 mixin UserModel on ConnectedProductsModel {
@@ -100,6 +56,94 @@ mixin ProductsModel on ConnectedProductsModel {
 
   bool get isLoading {
     return _isLoading;
+  }
+
+  void selectProduct(String id) {
+    _selectedProductID = id;
+    notifyListeners();
+  }
+
+  void toggleDisplayMode() {
+    _showFavorites = !_showFavorites;
+    notifyListeners();
+  }
+
+  Future<bool> addProduct(String title, String description, String image,
+      double price, String address) async {
+    _isLoading = true;
+    notifyListeners();
+    final Map<String, dynamic> productData = {
+      "title": title,
+      "address": address,
+      "description": description,
+      "imagePath":
+          'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.lnUwNlmh4RTB5_JLWA9XpAHaE8%26pid%3DApi&f=1',
+      "price": price,
+      "userEmail": _authenticatedUser.email,
+      "userID": _authenticatedUser.id
+    };
+    final Uri url = Uri.parse(
+        'https://easylist-4ab01-default-rtdb.firebaseio.com/products.json');
+    try {
+      final http.Response response =
+          await http.post(url, body: json.encode(productData));
+      if (response.statusCode != 200 && response.statusCode != 201) {
+        throw new Exception("Operation did not complete successfully");
+      }
+      final Map<String, dynamic> responseData = json.decode(response.body);
+      if (responseData['name'] == null) print("Firebase product ID not found!");
+      final Product newProduct = new Product(
+          id: responseData['name'],
+          address: address,
+          description: description,
+          imagePath: image,
+          price: price,
+          title: title,
+          userEmail: _authenticatedUser.email,
+          userID: _authenticatedUser.id);
+      _products[newProduct.id] = newProduct;
+      _isLoading = false;
+      notifyListeners();
+      return true;
+    } catch (error) {
+      _isLoading = false;
+      notifyListeners();
+      return false;
+    }
+  }
+
+  Future<Null> fetchProducts() {
+    _isLoading = true;
+    notifyListeners();
+    final Uri url = Uri.parse(
+        'https://easylist-4ab01-default-rtdb.firebaseio.com/products.json');
+    return http.get(url).then<Null>((http.Response response) {
+      if (response.body == "null") {
+        _isLoading = false;
+        notifyListeners();
+        return;
+      }
+      final Map<String, Map<String, dynamic>> productListData =
+          Map.castFrom(json.decode(response.body));
+      final Map<String, Product> fetchedProductMap = {};
+      productListData
+          .forEach((String productID, Map<String, dynamic> productData) {
+        final Product product = Product(
+          id: productID,
+          address: productData['address'],
+          title: productData['title'],
+          description: productData['description'],
+          price: productData['price'],
+          imagePath: productData['imagePath'],
+          userEmail: productData['userEmail'],
+          userID: productData['userID'],
+        );
+        fetchedProductMap[productID] = product;
+      });
+      _products = fetchedProductMap;
+      _isLoading = false;
+      notifyListeners();
+    });
   }
 
   Future<bool> updateProduct(String title, String description, String image,
@@ -150,6 +194,19 @@ mixin ProductsModel on ConnectedProductsModel {
     });
   }
 
+  void toggleProductFavoriteFlag() {
+    if (selectedProduct == null) return;
+    final bool newFavoriteStatus = !selectedProduct.isFavorite;
+    updateProduct(
+      selectedProduct.title,
+      selectedProduct.description,
+      selectedProduct.imagePath,
+      selectedProduct.price,
+      selectedProduct.address,
+      newFavoriteStatus,
+    );
+  }
+
   Future<bool> deleteProduct() {
     _isLoading = true;
     final String deletedProductID = selectedProduct.id;
@@ -172,62 +229,5 @@ mixin ProductsModel on ConnectedProductsModel {
       notifyListeners();
       return false;
     });
-  }
-
-  Future<Null> fetchProducts() {
-    _isLoading = true;
-    notifyListeners();
-    final Uri url = Uri.parse(
-        'https://easylist-4ab01-default-rtdb.firebaseio.com/products.json');
-    return http.get(url).then<Null>((http.Response response) {
-      if (response.body == "null") {
-        _isLoading = false;
-        notifyListeners();
-        return;
-      }
-      final Map<String, Map<String, dynamic>> productListData =
-          Map.castFrom(json.decode(response.body));
-      final Map<String, Product> fetchedProductMap = {};
-      productListData
-          .forEach((String productID, Map<String, dynamic> productData) {
-        final Product product = Product(
-          id: productID,
-          address: productData['address'],
-          title: productData['title'],
-          description: productData['description'],
-          price: productData['price'],
-          imagePath: productData['imagePath'],
-          userEmail: productData['userEmail'],
-          userID: productData['userID'],
-        );
-        fetchedProductMap[productID] = product;
-      });
-      _products = fetchedProductMap;
-      _isLoading = false;
-      notifyListeners();
-    });
-  }
-
-  void toggleProductFavoriteFlag() {
-    if (selectedProduct == null) return;
-    final bool newFavoriteStatus = !selectedProduct.isFavorite;
-    updateProduct(
-      selectedProduct.title,
-      selectedProduct.description,
-      selectedProduct.imagePath,
-      selectedProduct.price,
-      selectedProduct.address,
-      newFavoriteStatus,
-    );
-  }
-
-  void selectProduct(String id) {
-    _selectedProductID = id;
-    notifyListeners();
-  }
-
-  void toggleDisplayMode() {
-    _showFavorites = !_showFavorites;
-    notifyListeners();
   }
 }
